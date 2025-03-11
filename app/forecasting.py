@@ -579,6 +579,9 @@ class ForecastingEngine:
             # Generate prediction
             future_forecast = model.predict(future)
             
+            # Extract and enhance components for visualization
+            self._enhance_forecast_components(future_forecast, model)
+            
             # Log the forecast values
             logger.info("Future forecast preview (first 3 days): %s", 
                       future_forecast[['ds', 'yhat']].head(3).to_dict('records'))
@@ -659,6 +662,50 @@ class ForecastingEngine:
         except Exception as e:
             logger.error("Error in generate_forecast: %s", str(e))
             raise
+
+    def _enhance_forecast_components(self, forecast_df: pd.DataFrame, model) -> None:
+        """Enhance forecast components for better visualization."""
+        try:
+            logger.info("Enhancing forecast components for visualization")
+            
+            # Check if the model has yearly seasonality
+            if 'yearly' in forecast_df.columns:
+                forecast_df.rename(columns={'yearly': 'yearly_seasonality'}, inplace=True)
+            
+            # Check if the model has weekly seasonality
+            if 'weekly' in forecast_df.columns:
+                forecast_df.rename(columns={'weekly': 'weekly_seasonality'}, inplace=True)
+            
+            # Check if the model has daily seasonality
+            if 'daily' in forecast_df.columns:
+                forecast_df.rename(columns={'daily': 'daily_seasonality'}, inplace=True)
+            
+            # Rename trend component for consistency
+            if 'trend' in forecast_df.columns:
+                # Keep as is, since 'trend' is already the right name
+                pass
+            
+            # Add a holidays component if it exists
+            if 'holidays' in forecast_df.columns:
+                # Keep as is
+                pass
+            elif 'holidays_lower' in forecast_df.columns:
+                # Sometimes Prophet splits holiday effects
+                holiday_cols = [col for col in forecast_df.columns if col.startswith('holiday')]
+                if holiday_cols:
+                    forecast_df['holidays'] = forecast_df[holiday_cols].sum(axis=1)
+            
+            # Add extra regressors as components if they exist
+            for regressor in model.extra_regressors:
+                if regressor in forecast_df.columns and regressor not in ['trend', 'additive_terms', 'multiplicative_terms']:
+                    # Keep regressor as is
+                    regressor_col = f"{regressor}_effect"
+                    forecast_df[regressor_col] = forecast_df[regressor]
+            
+            logger.info("Components enhanced successfully")
+            
+        except Exception as e:
+            logger.error(f"Error enhancing forecast components: {str(e)}")
 
     def get_model_metrics(self, target_col: str) -> Dict[str, float]:
         """Get model performance metrics."""
