@@ -16,9 +16,9 @@ docker build -t forecasting-app:latest .
 echo "Running container..."
 docker run -d \
     --name forecasting-app \
-    -p 8501:8501 \
+    -p 8502:8501 \
     forecasting-app:latest
 
 echo "Container is starting..."
-echo "You can access the application at http://localhost:8501"
+echo "You can access the application at http://localhost:8502"
 echo "View logs with: docker logs -f forecasting-app" 

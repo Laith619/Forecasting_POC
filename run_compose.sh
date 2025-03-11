@@ -19,6 +19,6 @@ echo "Building and starting services..."
 $DOCKER_COMPOSE up -d --build
 
 echo "Services are starting..."
-echo "You can access the application at http://localhost:8501"
+echo "You can access the application at http://localhost:8502"
 echo "View logs with: $DOCKER_COMPOSE logs -f"
 echo "Stop services with: $DOCKER_COMPOSE down" 
