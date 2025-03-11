@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  forecasting-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: forecasting-app
+    ports:
+      - "8501:8501"
+    volumes:
+      # For development - mount app directory to allow live changes
+      - ./app:/app/app
+    restart: unless-stopped
+    environment:
+      - PYTHONPATH=/app
+      # Add any other environment variables here
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s 
