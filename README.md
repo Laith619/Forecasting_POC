@@ -30,13 +30,13 @@ A comprehensive web-based forecasting application that enables e-commerce busine
 
 ## Implementation Status
 
-Current progress: **65% complete**
+Current progress: **80% complete**
 
 - ✅ Data ingestion and preprocessing (100%)
-- ⚠️ Forecasting models implementation (43%)
-- ✅ User interface and UX design (86%)
-- ⚠️ Metrics and visualization (57%)
-- ⚠️ Testing and deployment (57%)
+- ⚠️ Forecasting models implementation (57%)
+- ✅ User interface and UX design (100%)
+- ⚠️ Metrics and visualization (86%)
+- ⚠️ Testing and deployment (71%)
 
 For detailed implementation status, see [Implementation Plan](implementation_plan.md).
 
@@ -63,6 +63,22 @@ xgboost>=1.7.0
 
 ## Installation
 
+### Option 1: Using Docker (Recommended)
+
+The easiest way to run the application is using Docker:
+
+```bash
+# Using Docker directly
+./run_docker.sh
+
+# OR using Docker Compose
+./run_compose.sh
+```
+
+This will build and start the application container, making it available at http://localhost:8501.
+
+### Option 2: Local Installation
+
 It's recommended to install the dependencies using conda:
 
 ```bash
@@ -79,6 +95,24 @@ pip install -r requirements.txt
 ```
 
 ## Usage
+
+### Using Docker
+
+1. Start the application:
+   ```bash
+   ./run_docker.sh
+   ```
+   or
+   ```bash
+   ./run_compose.sh
+   ```
+
+2. Open your browser and navigate to:
+   ```
+   http://localhost:8501
+   ```
+
+### Local Installation
 
 1. Activate your environment:
    ```bash
@@ -111,6 +145,10 @@ pip install -r requirements.txt
 - **app/data_processor.py**: Data validation, cleaning, and feature engineering
 - **app/forecasting.py**: Prophet model implementation and forecasting engine
 - **app/arima_forecaster.py**: ARIMA/SARIMAX model implementation
+- **Dockerfile**: Configuration for containerizing the application
+- **docker-compose.yml**: Docker Compose configuration for easy deployment
+- **run_docker.sh**: Helper script for Docker operations
+- **run_compose.sh**: Helper script for Docker Compose operations
 - **implementation_plan.md**: Detailed implementation plan and progress tracking
 - **ecommerce_forecast_enhancement_plan.md**: Enhancement roadmap and feature details
 
