@@ -38,11 +38,17 @@ RUN pip install --upgrade pip && \
 # Copy the application code
 COPY . .
 
-# Expose the port that Streamlit runs on
-EXPOSE 8501
+# Create a script to start Streamlit with the correct port
+RUN echo '#!/bin/bash\n\
+PORT="${PORT:-8501}"\n\
+streamlit run app/main.py --server.port=$PORT --server.address=0.0.0.0\n\
+' > /app/start.sh && chmod +x /app/start.sh
 
-# Add a healthcheck
-HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health || exit 1
+# Expose the port that will be used (handled by the PORT environment variable in Cloud Run)
+EXPOSE 8080
 
-# Set the entry point to run the application
-CMD ["streamlit", "run", "app/main.py", "--server.port=8501", "--server.address=0.0.0.0"]
+# Add a healthcheck that uses the PORT environment variable
+HEALTHCHECK CMD curl --fail http://localhost:${PORT:-8080}/_stcore/health || exit 1
+
+# Set the entry point to run the application using our wrapper script
+CMD ["/app/start.sh"]
