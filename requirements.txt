@@ -1,0 +1,12 @@
+# These packages should be installed via conda instead of pip
+# conda install -c conda-forge numpy pandas prophet matplotlib pytz openpyxl
+streamlit>=1.20.0
+prophet>=1.1.1
+pandas>=1.5.0
+numpy>=1.22.0
+scikit-learn>=1.0.0
+plotly>=5.10.0
+statsmodels>=0.13.5
+pmdarima>=2.0.3
+scipy>=1.9.0
+openpyxl==3.1.2
