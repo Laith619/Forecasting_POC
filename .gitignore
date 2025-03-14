@@ -178,3 +178,6 @@ cython_debug/
 
 # Streamlit
 .streamlit/
+
+# CSV files
+*.csv
